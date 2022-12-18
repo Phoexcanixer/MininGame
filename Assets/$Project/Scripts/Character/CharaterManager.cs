@@ -65,16 +65,16 @@ public class CharaterManager : MonoBehaviour
             });
 
         // rotate the character based on touch input
-        this.UpdateAsObservable()
-            .Where(_ => Input.touchCount > 0)
-            .Subscribe(_ =>
-            {
-                Touch touch = Input.GetTouch(0);
-                float x = touch.deltaPosition.x;
-                //float y = touch.deltaPosition.y;
-                transform.Rotate(Vector3.up, x * Sensitivity);
-                //transform.Rotate(Vector3.right, -y * Sensitivity);
-            });
+        //this.UpdateAsObservable()
+        //    .Where(_ => Input.touchCount > 0)
+        //    .Subscribe(_ =>
+        //    {
+        //        Touch touch = Input.GetTouch(0);
+        //        float x = touch.deltaPosition.x;
+        //        //float y = touch.deltaPosition.y;
+        //        transform.Rotate(Vector3.up, x * Sensitivity);
+        //        //transform.Rotate(Vector3.right, -y * Sensitivity);
+        //    });
     }
     void OnTriggerEnter(Collider other)
     {
