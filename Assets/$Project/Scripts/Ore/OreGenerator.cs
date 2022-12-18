@@ -19,7 +19,7 @@ public class OreGenerator : MonoBehaviour
 
             // create an instance of the ore prefab at the random position
             var ore = Instantiate(OrePrefab, new Vector3(xPos, 0, zPos), Quaternion.identity);
-            ore.transform.SetParent(Floor, true);
+            ore.transform.SetParent(transform, true);
         }
     }
 }

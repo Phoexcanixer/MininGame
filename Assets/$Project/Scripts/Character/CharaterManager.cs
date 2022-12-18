@@ -1,5 +1,6 @@
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -10,9 +11,13 @@ public class CharaterManager : MonoBehaviour
     public float Sensitivity = 10f;
 
     Rigidbody _rig;
+    bool _isShowJoystick;
     void Awake()
     {
+        _isShowJoystick = SystemInfo.deviceType == DeviceType.Handheld;
         _rig = GetComponent<Rigidbody>();
+        if (!_isShowJoystick)
+            UltimateJoystick.DisableJoystick("Movement");
     }
     void Start()
     {
@@ -25,8 +30,16 @@ public class CharaterManager : MonoBehaviour
         this.UpdateAsObservable()
             .Subscribe(_ =>
             {
-                input.x = Input.GetAxis("Horizontal");
-                input.y = Input.GetAxis("Vertical");
+                if (_isShowJoystick)
+                {
+                    input.x = UltimateJoystick.GetHorizontalAxis("Movement");
+                    input.y = UltimateJoystick.GetVerticalAxis("Movement");
+                }
+                else
+                {
+                    input.x = Input.GetAxis("Horizontal");
+                    input.y = Input.GetAxis("Vertical");
+                }
             });
 
         // move the character based on the input
@@ -62,5 +75,13 @@ public class CharaterManager : MonoBehaviour
                 transform.Rotate(Vector3.up, x * Sensitivity);
                 //transform.Rotate(Vector3.right, -y * Sensitivity);
             });
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        other.GetComponent<OreManager>()?.OpenView();
+    }
+    void OnTriggerExit(Collider other)
+    {
+        other.GetComponent<OreManager>()?.CloseView();
     }
 }
